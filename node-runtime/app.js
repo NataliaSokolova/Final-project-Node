@@ -2,7 +2,7 @@ import env from "dotenv";
 import "express-async-errors";
 import express from "express";
 import authRouter from "./routes/auth.js";
-import jobsRouter from "./routes/jobs.js";
+import exsRouter from "./routes/exs.js";
 import helmet from "helmet";
 import cors from "cors";
 import xss from "xss-clean";
@@ -31,34 +31,27 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.get('/proxy', async (req, res) => {
-//   try {
-//     const response = await axios.get(req.query.url);
-//     res.send(response.data);
-//   } catch (error) {
-//     res.status(500).send(error);
-//   }
-// });
+
 
 app.get('/api', (req, res) => {
   res.json({ message: 'Hello from server!!!!' });
 });
 
-// // routes
-// app.get("/", (req, res) => {
-//   res.send('<h1>Jobs API</h1><a href="/api-docs">Documentation</a>');
-// });
+// routes
+app.get("/", (req, res) => {
+  res.send('<h1>Exercises API</h1><a href="/api-docs">Documentation</a>');
+});
 // app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static("public"));
+// app.use(express.static("public"));
 
 
 app.use("/api/v1/auth", authRouter);   
-app.use("/api/v1/jobs", authUser, jobsRouter);
+app.use("/api/v1/exercise", authUser, exsRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 const start = async () => {
   try {

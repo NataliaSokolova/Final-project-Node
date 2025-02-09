@@ -1,118 +1,145 @@
-import Job from "../models/Job.js";
+import Exercise from "../models/Exercise.js";
 import { getStatusCode, StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 
-
-const favorites = [];
-
-const getAllExs = async (req, res) => {
-  const url = 'https://exercisedb.p.rapidapi.com/exercises?limit=10&offset=0';
-  const options = {
-    method: 'GET',
-    headers: {
-      'x-rapidapi-key': 'Sign Up for Key',
-      'x-rapidapi-host': 'exercisedb.p.rapidapi.com'
-    }
-  }; 
-
-    const response = await fetch(url, options);
-    const result = await response.json();
-    res.status(StatusCodes.OK).json({ exs: result });
-
-};
-
-const addToFavorites = async(req,res) => {
-  const { exerciseID } = req.body;
-
-  const url = `https://exercisedb.p.rapidapi.com/exercises/${exsId}`;
-  const options = {
-    method: 'GET',
-    headers: {
-      'x-rapidapi-key': 'Sign Up for Key', 
-      'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
-    },
-  };
-const response = await fetch(url, options);
-
-if (!response.ok) {
-  return res.status(response.status).json({ error: `Failed to fetch exercise: ${response.statusText}` });
-}
-
-const exercise = await response.json();
-
-// Check if the exercise is already in favorites
-const isAlreadyFavorite = favorites.some((fav) => fav.id === exercise.id);
-if (isAlreadyFavorite) {
-  return res.status(400).json({ message: 'Exercise is already in favorites.' });
-}
-
-// Add the exercise to the favorites list
-favorites.push(exercise);
-
-res.status(200).json({ message: 'Exercise added to favorites.', exercise });
-
-console.error('Error adding exercise to favorites:', error.message);
-res.status(500).json({ error: 'Failed to add exercise to favorites.' });
-}
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 
-const getFavorites = (req, res) => {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-  res.status(200).json({ favorites});
+// const getAllExs = async (req, res) => {
+//   const url = "https://exercisedb.p.rapidapi.com/exercises?limit=10&offset=0";
+//   const options = {
+//     method: "GET",
+//     headers: {
+//       "x-rapidapi-key": process.env.RAPIDAPI_KEY,
+//       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
+//     },
+//   };
 
-  console.error('Error fetching favorites:', error.message);
-  res.status(500).json({ error: 'Failed to fetch favorites.' });
-}
+//   const response = await fetch(url, options);
+//   if (!response.ok)
+//     return res
+//       .status(response.status)
+//       .json({ error: `Failed to fetch exercises: ${response.statusText}` });
 
-// const createJob = async (req, res) => {
-//   req.body.createdBy = req.user.userId;
-//   const job = await Job.create(req.body);
-//   res.status(StatusCodes.CREATED).json({ job });
+//   const result = await response.json();
+//   res.status(StatusCodes.OK).json({ exs: result });
 // };
 
-// const updateJob = async (req, res) => {
+const getAllExs = async (req, res) =>{
+
+  const filePath = path.join(__dirname, '../data/all_exs.json');
+
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error("❌ Error reading file:", err);
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: `Failed to fetch exercises: ${err.message}` });
+    }
+
+  
+      const jsonData = JSON.parse(data);
+      res.status(StatusCodes.OK).json({ exs: jsonData });
+      console.log("✅ Successfully fetched exercises:", jsonData);
+
+      return res
+   
+  });
+}
+
+
+
+const createExs = async(req, res) => {
+  req.body.createdByuser = req.user.userId;
+  console.log("✅ Пользователь:", req.user); // Проверяем, есть ли userId
+
+  const favexs = await Exercise.create(req.body);
+  console.log("✅ упр:", favexs); // Проверяем, есть ли userId
+
+  res
+    .status(StatusCodes.CREATED)
+    .json({ message: "Exercise added to favorites.", exercise: favexs });
+  
+}
+
+
+
+const addToFavorites = async(req, res) => {
+
+
+}
+  // const exerciseData =  {
+  //     ...req.body,
+  //     userId: req.user.userId, 
+  // } 
+
+  // if (!exsId) {
+  //   return res
+  //     .status(StatusCodes.BAD_REQUEST)
+  //     .json({ error: "Exercise ID is required." });
+  // }
+
+  // const url = `https://exercisedb.p.rapidapi.com/exercises/${exsId}`;
+  // const options = {
+  //   method: "GET",
+  //   headers: {
+  //     "x-rapidapi-key": "Sign Up for Key",
+  //     "x-rapidapi-host": "exercisedb.p.rapidapi.com",
+  //   },
+  // };
+
+  // const response = await fetch(url, options);
+  // if (!response.ok) {
+  //   return res
+  //     .status(response.status)
+  //     .json({ error: `Failed to fetch exercise: ${response.statusText}` });
+  // }
+
+  // const exerciseData = await response.json();
+
+//   const exercise = await Exercise.create(exerciseData);
+
+//   res
+//     .status(StatusCodes.CREATED)
+//     .json({ message: "Exercise added to favorites.", exercise: newExercise });
+// };
+
+// const getAllFavorites = async (req, res) => {
+//   const { iserId } = req.user;
+
+//   const favorites = await Exercise.find({ userId }).lean();
+
+//   if (favorites.length === 0) {
+//     return res
+//       .status(StatusCodes.NOT_FOUND)
+//       .json({ message: "No favorites found." });
+//   }
+
+//   res.status(StatusCodes.OK).json({ favorites });
+// };
+
+// const deleteExs = async (req, res) => {
 //   const {
 //     user: { userId },
-//     params: { id: jobId },
-//     body: { company, position },
+//     params: { exsID },
 //   } = req;
 
-//   if (!company || !position) {
-//     throw new BadRequestError("Company or Position fields cannot be empty");
+//   const deleteExrs = await Exercise.findOneAndDelete({ exsID, userId });
+
+//   if (!deleteExrs) {
+//     return res
+//       .status(StatusCodes.NOT_FOUND)
+//       .json({ message: "Exercise not found" });
 //   }
 
-//   const job = await Job.findByIdAndUpdate(
-//     { _id: jobId, createdBy: userId },
-//     req.body,
-//     { new: true, runValidators: true }
-//   );
-
-//   if (!job) {
-//     throw new NotFoundError(`No job with id found`);
-//   }
-
-//   res.status(StatusCodes.OK).json({ job });
+//   res
+//     .status(StatusCodes.OK)
+//     .json({ message: "Exercise successfully removed from favorites." });
 // };
 
-const deleteExs = async (req, res) => {
-  const { exsId } = req.body; 
-
-  // Remove the exercise from the favorites list
-  const index = favorites.findIndex((fav) => fav.id === exsId);
-  if (index === -1) {
-    return res.status(404).json({ message: 'Exercise not found in favorites.' });
-  }
-
-  favorites.splice(index, 1);
-
-  res.status(200).json({ message: 'Exercise removed from favorites.' });
-
-  console.error('Error removing exercise from favorites:', error.message);
-  res.status(500).json({ error: 'Failed to remove exercise from favorites.' });
-}
-
-
-
-
-
-export { getAllExs, addToFavorites, getFavorites, deleteExs};
+export { getAllExs, createExs};

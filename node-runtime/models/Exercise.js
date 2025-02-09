@@ -12,34 +12,34 @@ const ExsSchema = new mongoose.Schema(
       required: [true, "Please provide equipment"],
       maxlength: 255,
     },
-    exsId: {
-      type: String,
-      required: true,
-      maxlength: 255,
-    },
-    name:{
-      type: String,
-      required: true,
-      maxlength: 255,
-    },
+    // exsId: {
+    //   type: String,
+    //   required: true,
+    //   maxlength: 255,
+    // },
+    // name:{
+    //   type: String,
+    //   required: true,
+    //   maxlength: 255,
+    // },
     
-    target: {
-      type: String,
-      required: true,
-      maxlength: 255,
-    },
+    // target: {
+    //   type: String,
+    //   required: true,
+    //   maxlength: 255,
+    // },
 
-    secondaryMuscles:{
-      type: [String],
-      required: [true],
-    },
+    // secondaryMuscles:{
+    //   type: [String],
+    //   required: [true],
+    // },
 
-    instructions: {
-      type: [String],
-      required: [true],
-    },
+    // instructions: {
+    //   type: [String],
+    //   required: [true],
+    // },
 
-    userId: {
+    createdByuser: {
       type: mongoose.Types.ObjectId,
       ref: "User",
       required: [true, "Please provide user"],
