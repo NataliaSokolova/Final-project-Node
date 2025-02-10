@@ -6,39 +6,18 @@ import { BadRequestError, NotFoundError } from "../errors/index.js";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { log } from "console";
-
 import mongoose from "mongoose";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// const getAllExs = async (req, res) => {
-//   const url = "https://exercisedb.p.rapidapi.com/exercises?limit=10&offset=0";
-//   const options = {
-//     method: "GET",
-//     headers: {
-//       "x-rapidapi-key": process.env.RAPIDAPI_KEY,
-//       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
-//     },
-//   };
 
-//   const response = await fetch(url, options);
-//   if (!response.ok)
-//     return res
-//       .status(response.status)
-//       .json({ error: `Failed to fetch exercises: ${response.statusText}` });
-
-//   const result = await response.json();
-//   res.status(StatusCodes.OK).json({ exs: result });
-// };
 
 const getAllExs = async (req, res) => {
   const filePath = path.join(__dirname, "../data/all_exs.json");
 
   fs.readFile(filePath, "utf8", (err, data) => {
     if (err) {
-      console.error("❌ Error reading file:", err);
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: `Failed to fetch exercises: ${err.message}` });
@@ -46,22 +25,8 @@ const getAllExs = async (req, res) => {
 
     const jsonData = JSON.parse(data);
     res.status(StatusCodes.OK).json({ exs: jsonData });
-    console.log("✅ Successfully fetched exercises:", jsonData);
-
     return res;
   });
-};
-
-const createExs = async (req, res) => {
-  req.body.createdByuser = req.user.userId;
-  console.log("✅ Пользователь:", req.user); // Проверяем, есть ли userId
-
-  const favexs = await Exercise.create(req.body);
-  console.log("✅ упр:", favexs); // Проверяем, есть ли userId
-
-  res
-    .status(StatusCodes.CREATED)
-    .json({ message: "Exercise added to favorites.", exercise: favexs });
 };
 
 const addToFavorites = async (req, res) => {
@@ -96,23 +61,11 @@ const addToFavorites = async (req, res) => {
     .json({ message: "Exercises added to favorites.", updatedExercises });
 };
 
-
-
-
-
 const getAllFavorites = async (req, res) => {
-
   const { userId } = req.user;
 
-  console.log("User ID:", userId);
-
-
   const filter = { createdByuser: userId };
- 
-
-
   const favorites = await FavExercise.findOne(filter).select("favExs");
-  console.log("Found favorites:", favorites);
 
   if (!favorites || !favorites.favExs) {
     return res
@@ -123,11 +76,67 @@ const getAllFavorites = async (req, res) => {
   res.status(StatusCodes.OK).json({ favExs: favorites.favExs });
 };
 
+const deleteFavorites = async (req, res) => {
+  const { userId } = req.user;
+
+  const filter = { createdByuser: userId };
+  const favorites = await FavExercise.findOneAndDelete(filter).select("favExs");
+
+  if (!favorites) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ message: "No favorites found" });
+  }
+
+  res
+    .status(StatusCodes.OK)
+    .json({ message: "Exercise successfully removed from favorites." });
+};
+
+
+
+
+
+
+
+// const createExs = async (req, res) => {
+//   req.body.createdByuser = req.user.userId;
+
+//   const favexs = await Exercise.create(req.body);
+
+//   res
+//     .status(StatusCodes.CREATED)
+//     .json({ message: "Exercise added to favorites.", exercise: favexs });
+// };
+
+
+// const getAllExs = async (req, res) => {
+//   const url = "https://exercisedb.p.rapidapi.com/exercises?limit=10&offset=0";
+//   const options = {
+//     method: "GET",
+//     headers: {
+//       "x-rapidapi-key": process.env.RAPIDAPI_KEY,
+//       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
+//     },
+//   };
+
+//   const response = await fetch(url, options);
+//   if (!response.ok)
+//     return res
+//       .status(response.status)
+//       .json({ error: `Failed to fetch exercises: ${response.statusText}` });
+
+//   const result = await response.json();
+//   res.status(StatusCodes.OK).json({ exs: result });
+// };
+
 // const deleteExs = async (req, res) => {
 //   const {
 //     user: { userId },
 //     params: { exsID },
 //   } = req;
+
+
 
 //   const deleteExrs = await Exercise.findOneAndDelete({ exsID, userId });
 
@@ -142,27 +151,9 @@ const getAllFavorites = async (req, res) => {
 //     .json({ message: "Exercise successfully removed from favorites." });
 // };
 
-
-const deleteFavorites = async (req, res) => {
-  const { userId } = req.user;
-
-  console.log("User ID:", userId);
-
-  const filter =( { createdByuser: userId})
-  
-  const favorites = await FavExercise.findOneAndDelete(filter).select("favExs");
-  console.log("Found favorites:", favorites);
-
-  if(!favorites){
-   return res
-    .status(StatusCodes.NOT_FOUND)
-    .json({message: "No favorites found"})
-  }
-
-  res
-  .status(StatusCodes.OK)
-  .json({ message: "Exercise successfully removed from favorites." });
-
-}
-
-export { getAllExs, createExs, addToFavorites, getAllFavorites, deleteFavorites };
+export {
+  getAllExs,
+  addToFavorites,
+  getAllFavorites,
+  deleteFavorites,
+};

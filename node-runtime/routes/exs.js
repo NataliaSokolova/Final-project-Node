@@ -1,7 +1,6 @@
 import express from "express";
 import {
   getAllExs,
-  createExs,
   addToFavorites,
   getAllFavorites,
   deleteFavorites,
