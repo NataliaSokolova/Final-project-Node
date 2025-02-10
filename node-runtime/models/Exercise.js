@@ -7,11 +7,11 @@ const ExsSchema = new mongoose.Schema(
       required: [true, "Please provide bodypart name"],
       maxlength: 255,
     },
-    equipment: {
-      type: String,
-      required: [true, "Please provide equipment"],
-      maxlength: 255,
-    },
+    // equipment: {
+    //   type: String,
+    //   required: [true, "Please provide equipment"],
+    //   maxlength: 255,
+    // },
     // exsId: {
     //   type: String,
     //   required: true,

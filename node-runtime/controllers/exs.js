@@ -1,10 +1,14 @@
 import Exercise from "../models/Exercise.js";
+import FavExercise from "../models/FavExercise.js";
 import { getStatusCode, StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { log } from "console";
+
+import mongoose from "mongoose";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -53,7 +57,6 @@ const getAllExs = async (req, res) =>{
 }
 
 
-
 const createExs = async(req, res) => {
   req.body.createdByuser = req.user.userId;
   console.log("✅ Пользователь:", req.user); // Проверяем, есть ли userId
@@ -68,11 +71,41 @@ const createExs = async(req, res) => {
 }
 
 
-
 const addToFavorites = async(req, res) => {
+  const {
+    user: { userId },
+    body: { favExs},
+  } = req;
 
+  const userObjectId = new mongoose.Types.ObjectId(userId);
 
+  if (!favExs || !Array.isArray(favExs) || favExs.length === 0) {
+    throw new BadRequestError("The 'favExs' field must be a non-empty array.");
+  }
+
+  const filter = { createdByuser: userObjectId };
+
+  const updatedExercises = await FavExercise.findOneAndUpdate(
+    filter,
+    {
+      // We might want to do some smarter updates than just overwrriting the whole array
+      // $addToSet: { favExs: { $each: favExs } }, // Add missing items
+      // $pull: { favExercises: { $in: ["b", "c"] } } // Remove unwanted items
+      favExs: favExs
+    },
+    { upsert: true, new: true } // Creates a new record if one doesn't exist
+  );
+
+  if (!updatedExercises) {
+    throw new NotFoundError(`No exercises found or updated`);
 }
+
+
+  res.status(StatusCodes.OK).json({ message: "Exercises added to favorites.", updatedExercises });
+};
+
+
+
   // const exerciseData =  {
   //     ...req.body,
   //     userId: req.user.userId, 
@@ -142,4 +175,4 @@ const addToFavorites = async(req, res) => {
 //     .json({ message: "Exercise successfully removed from favorites." });
 // };
 
-export { getAllExs, createExs};
+export { getAllExs, createExs, addToFavorites};

@@ -2,6 +2,7 @@ import express from "express";
 import {
   getAllExs,
   createExs,
+  addToFavorites,
   // addToFavorites, 
   // getAllFavorites, 
   // deleteExs
@@ -11,7 +12,7 @@ const router = express.Router();
 
 
 router.route("/").get(getAllExs);
-router.route("/").post(createExs)
+router.route("/").post(addToFavorites);
 
 // router.delete("/:exsId", deleteExs);
 
