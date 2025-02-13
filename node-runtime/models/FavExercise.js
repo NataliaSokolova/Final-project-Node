@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const FavExsSchema = new mongoose.Schema(
   {
     favExs: {
-      type: [String],
+      type: [String], 
+      default: [],
     },
 
 

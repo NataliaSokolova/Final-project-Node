@@ -21,4 +21,9 @@ async function login(req, res) {
   res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
 }
 
-export { register, login };
+async function checkToken(req, res) {
+    res.status(StatusCodes.OK).json({});
+}
+
+
+export { register, login , checkToken};
