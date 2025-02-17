@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from '../Navbar';
 import Home from '../../pages/Home';
 import About from '../../pages/About'
-import Exercises from '../../pages/Exercises';
+import ExerciseCard from '../../pages/ExerciseCard';
 import useLoggedInStatus from './app.hooks'
 import LoginRegister from '../login/LoginRegister';
 import Register from '../login/Register';
@@ -40,7 +40,7 @@ const App = () => {
             />
             <Route 
                 path="/exercises" 
-                element={isLoggedIn ? <Exercises /> : <Navigate to="/login-register" />} 
+                element={isLoggedIn ? <ExerciseCard /> : <Navigate to="/login-register" />} 
             />
             <Route 
                 path="/about" 

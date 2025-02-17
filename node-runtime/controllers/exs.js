@@ -29,76 +29,34 @@ const getAllExs = async (req, res) => {
   });
 };
 
-
-
-
-
-
-// const addToFavorites = async (req, res) => {
-//   const {
-//     user: { userId },
-//     body: { favExs },
-//   } = req;
-
-//   if (!favExs || !Array.isArray(favExs) || favExs.length === 0) {
-//     throw new BadRequestError("The 'favExs' field must be a non-empty array.");
-//   }
-
-//   const filter = { createdByuser: userId };
-
-//   const updatedExercises = await FavExercise.findOneAndUpdate(
-//     filter,
-//     {
-//       // We might want to do some smarter updates than just overwrriting the whole array
-//       // $addToSet: { favExs: { $each: favExs } }, // Add missing items
-//       // $pull: { favExercises: { $in: ["b", "c"] } } // Remove unwanted items
-//       favExs: favExs,
-//     },
-//     { upsert: true, new: true } // Creates a new record if one doesn't exist
-//   );
-
-//   if (!updatedExercises) {
-//     throw new NotFoundError(`No exercises found or updated`);
-//   }
-
-//   res
-//     .status(StatusCodes.OK)
-//     .json({ message: "Exercises added to favorites.", updatedExercises });
-// };
-
-
 const addToFavorites = async (req, res) => {
-  const { userId } = req.user;
-  const { exerciseId } = req.body;
+  const {
+    user: { userId },
+    body: { exerciseId },
+  } = req;
 
-  try {
-    // Find the user's favorites
-    let favorites = await FavExercise.findOne({ createdByuser: userId });
-
-    // If no favorites document exists, create one
-    if (!favorites) {
-      favorites = new FavExercise({ createdByuser: userId, favExs: [exerciseId] });
-    } else {
-      // Add the exercise to the favorites if not already present
-      if (!favorites.favExs.includes(exerciseId)) {
-        favorites.favExs.push(exerciseId);
-      }
-    }
-
-    // Save the updated favorites
-    await favorites.save();
-
-    res.status(StatusCodes.OK).json({ message: "Exercise added to favorites.", favExs: favorites.favExs });
-  } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error adding favorite exercise.", error: error.message });
+  if (!exerciseId) {
+    throw new BadRequestError("exerciseId not provided.");
   }
+
+  const filter = { createdByuser: userId };
+
+  const updatedExercises = await FavExercise.findOneAndUpdate(
+    filter,
+    {
+      $addToSet: { favExs: exerciseId },
+    },
+    { upsert: true, new: true } // Creates a new record if one doesn't exist
+  );
+
+  if (!updatedExercises) {
+    throw new NotFoundError(`No exercises found or updated`);
+  }
+
+  res
+    .status(StatusCodes.OK)
+    .json({ message: "Exercises added to favorites.", updatedExercises });
 };
-
-
-
-
-
-
 
 const getAllFavorites = async (req, res) => {
   const { userId } = req.user;
@@ -111,33 +69,33 @@ const getAllFavorites = async (req, res) => {
       .status(StatusCodes.NOT_FOUND)
       .json({ message: "No favorites found." });
   }
-
   res.status(StatusCodes.OK).json({ favExs: favorites.favExs });
 };
 
-
 const deleteFavorites = async (req, res) => {
-  const { userId } = req.user;
+  const {
+    user: { userId },
+    body: { exerciseId },
+  } = req;
 
   const filter = { createdByuser: userId };
-  const favorites = await FavExercise.findOneAndDelete(filter).select("favExs");
 
-  if (!favorites) {
-    return res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ message: "No favorites found" });
+  const updatedExercises = await FavExercise.findOneAndUpdate(
+    filter,
+    {
+      $pull: { favExs: exerciseId },
+    },
+    { new: true } // Return the updated document
+  );
+
+  if (!updatedExercises) {
+    throw new NotFoundError("No exercises found or updated");
   }
 
   res
     .status(StatusCodes.OK)
-    .json({ message: "Exercise successfully removed from favorites." });
+    .json({ message: "Exercise removed from favorites.", updatedExercises });
 };
-
-
-
-
-
-
 
 // const createExs = async (req, res) => {
 //   req.body.createdByuser = req.user.userId;

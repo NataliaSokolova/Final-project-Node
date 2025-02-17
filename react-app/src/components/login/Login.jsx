@@ -1,5 +1,6 @@
 // Login.jsx
 import React, { useState } from 'react';
+import { setToken } from '../utils/token';
 
 const Login = ({ switchToRegister }) => {
     const [email, setEmail] = useState('');
@@ -21,7 +22,9 @@ const Login = ({ switchToRegister }) => {
             const data = await response.json();
             if (response.status === 200) {
                 setMessage(`Login successful. Welcome ${data.user.name}`);
-                // You can redirect to a jobs page or set token here
+                
+                setToken(data.token)
+
             } else {
                 setMessage(data.msg);
             }

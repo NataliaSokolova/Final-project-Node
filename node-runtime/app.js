@@ -9,7 +9,6 @@ import xss from "xss-clean";
 import RateLimiter from "express-rate-limit";
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { createProxyMiddleware } from 'http-proxy-middleware';
 
 
 // error handler
@@ -23,7 +22,7 @@ env.config();
 
 
 app.set("trust proxy", 1);
-app.use(RateLimiter({ windowMs: 15 * 60 * 1000, max: 100 }));
+app.use(RateLimiter({ windowMs: 5 * 60 * 1000, max: 1000 }));
 app.use(express.json());
 app.use(helmet());
 app.use(xss());
@@ -36,14 +35,6 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   next();
 });
-
-
-// const proxyMiddleware = createProxyMiddleware({
-//   target: 'http://localhost:3000/',
-//   changeOrigin: true,
-// }),
-
-// app.use('/', proxyMiddleware);
 
 
 // Define __dirname for ES modules
@@ -88,9 +79,9 @@ app.use(errorHandlerMiddleware);
 
 
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });
 
 // This code makes sure that any request that does not matches a static file
 // in the build folder, will just serve index.html. Client side routing is
