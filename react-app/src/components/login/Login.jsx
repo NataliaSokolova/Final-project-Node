@@ -1,5 +1,6 @@
 // Login.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import { setToken } from '../utils/token';
 
 const Login = ({ switchToRegister }) => {
@@ -7,6 +8,7 @@ const Login = ({ switchToRegister }) => {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [inputEnabled, setInputEnabled] = useState(true);
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -22,8 +24,8 @@ const Login = ({ switchToRegister }) => {
             const data = await response.json();
             if (response.status === 200) {
                 setMessage(`Login successful. Welcome ${data.user.name}`);
-                
                 setToken(data.token)
+                navigate('/');
 
             } else {
                 setMessage(data.msg);

@@ -1,5 +1,6 @@
 // Register.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Register = ({ switchToLogin }) => {
     const [name, setName] = useState('');
@@ -8,6 +9,7 @@ const Register = ({ switchToLogin }) => {
     const [password2, setPassword2] = useState('');
     const [message, setMessage] = useState('');
     const [inputEnabled, setInputEnabled] = useState(true);
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -26,6 +28,7 @@ const Register = ({ switchToLogin }) => {
             const data = await response.json();
             if (response.status === 201) {
                 setMessage(`Registration successful. Welcome ${data.user.name}`);
+                navigate('/');
             } else {
                 setMessage(data.msg);
             }
