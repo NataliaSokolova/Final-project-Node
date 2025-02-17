@@ -35,13 +35,11 @@ const useExercises = () => {
           Authorization: `Bearer ${token}`,
         }, 
       });
-      console.log(response);
 
       if (!response.ok) {
         throw new Error("Ошибка при загрузке избранных упражнений");
       }
       const data = await response.json();
-      console.log("favEx", data.favExs);
       setFavoriteExercises(data.favExs);
 
     } catch (error) {
@@ -74,18 +72,17 @@ const useExercises = () => {
     }
   };
 
-  console.log("favoriteExercises: ", favoriteExercises);
   // Добавляем поле `isFavorite` для упражнений, которые есть в избранном
   const exercises = useMemo(() => {
     return allExercises.map((exercise) => {
       return {
         ...exercise,
-        isFavorite: favoriteExercises.some((fav) => fav.id === exercise.id),
+        isFavorite: favoriteExercises.includes(exercise.id),
       };
     });
 
   }, [allExercises, favoriteExercises]);
- 
+
   return { exercises, fetchAllExercises, favoriteExercises, fetchFavoriteExercises, addToFav};
 };
 
