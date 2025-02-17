@@ -68,8 +68,7 @@ const useExercises = () => {
       }
       
       const data = await response.json();
-      console.log(data);
-      setFavoriteExercises(data);
+      console.log("addToFav", data);
     } catch (error) {
       console.log("Ошибка при загрузке избранных упражнений:", error);
     }
