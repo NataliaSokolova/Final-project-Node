@@ -48,7 +48,6 @@ const useExercises = () => {
   };
 
   const addToFav = async(exerciseId) => {
-    console.log(exerciseId);
     try {
       const token = localStorage.getItem("token");
       const response = await fetch("/api/v1/exercise", {
@@ -64,6 +63,8 @@ const useExercises = () => {
       if (!response.ok) {
         throw new Error("Ошибка при загрузке избранных упражнений");
       }
+
+      setFavoriteExercises((prev) => [...prev, exerciseId]);
       
       const data = await response.json();
       console.log("addToFav", data);
@@ -72,6 +73,30 @@ const useExercises = () => {
     }
   };
  
+  const removeFromFav = async (exerciseId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("/api/v1/exercise", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ exerciseId }),
+      });
+      console.log(response);
+
+      if (!response.ok) {
+        throw new Error("Ошибка при удалении из избранных упражнений");
+      }
+
+      setFavoriteExercises((prev) => prev.filter((id) => id !== exerciseId));
+    } catch (error) {
+      console.error("Error removing from favorites:", error);
+    }
+  };
+
+
 
   // Добавляем поле `isFavorite` для упражнений, которые есть в избранном
   const exercises = useMemo(() => {
@@ -84,7 +109,7 @@ const useExercises = () => {
 
   }, [allExercises, favoriteExercises]);
 
-  return { exercises, fetchAllExercises, favoriteExercises, fetchFavoriteExercises, addToFav};
+  return { exercises, fetchAllExercises, favoriteExercises, fetchFavoriteExercises, addToFav, removeFromFav};
 };
 
 export default useExercises;

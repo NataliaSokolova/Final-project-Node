@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useExercises from './Exercises';
 
 const ExerciseCard = () => {
-    const { exercises, fetchAllExercises, fetchFavoriteExercises, addToFav } = useExercises();
+    const { exercises, fetchAllExercises, fetchFavoriteExercises, addToFav, removeFromFav} = useExercises();
     const [currentPage, setCurrentPage] = useState(1); 
     const exercisesPerPage = 5; 
 
@@ -10,6 +10,8 @@ const ExerciseCard = () => {
         fetchAllExercises();
         fetchFavoriteExercises();
     }, []);
+
+    // fetchAllExercises, fetchFavoriteExercises
 
     // Calculate the exercises to display for the current page
     const indexOfLastExercise = currentPage * exercisesPerPage;
@@ -48,7 +50,9 @@ const ExerciseCard = () => {
                         <p><strong>Secondary Muscles:</strong> {exercise.secondaryMuscles}</p>
                         <p><strong>Instructions:</strong> {exercise.instructions}</p>
                         {exercise.isFavorite ? (
-                            <button style={{ backgroundColor: '#ffcccc', padding: '5px 10px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+                            <button
+                                onClick={() => removeFromFav(exercise.id)}
+                                style={{ backgroundColor: '#ffcccc', padding: '5px 10px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
                                 Remove from favorites
                             </button>
                         ) : (
