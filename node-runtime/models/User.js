@@ -23,9 +23,7 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Please provide password"],
     minlength: 6,
   },
-  // favexsec: {
-  //   type: [String]
-  // }
+
 });
 
 UserSchema.pre("save", async function () {
