@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useExercises from './Exercises';
+import { Button, Stack, Typography , Box} from '@mui/material';
 
 const ExerciseCard = () => {
     const { exercises, fetchAllExercises, fetchFavoriteExercises, addToFav, removeFromFav} = useExercises();
@@ -38,7 +39,8 @@ const ExerciseCard = () => {
     }
 
     return (
-        <div style={{ padding: '20px' }}>
+        <Box id="exercises" sx={{ mt: { lg: '109px' } }} mt="50px" p="20px">
+        <Stack direction="row" sx={{ gap: { lg: '107px', xs: '50px' } }} flexWrap="wrap" justifyContent="center">
             <h2 style={{ textAlign: 'center' }}>Exercises</h2>
             <ul style={{ listStyleType: 'none', padding: 0 }}>
                 {currentExercises.map((exercise) => (
@@ -68,18 +70,18 @@ const ExerciseCard = () => {
             </ul>
 
             {/* Pagination */}
-            <div style={{ marginTop: '20px', textAlign: 'center' }}>
+            <div style={{ marginTop: '20px', textAlign: 'center'}}>
                 <button
                     onClick={() => paginate(1)}
                     disabled={currentPage === 1}
-                    style={{ margin: '0 5px', padding: '5px 10px', cursor: 'pointer' }}
+                    style={{ backgroundColor: '#EBE6E7',borderRadius: '5px', margin: '0 5px',border: 'none', padding: '5px 10px', cursor: 'pointer' }}
                 >
                     First
                 </button>
                 <button
                     onClick={() => paginate(currentPage - 1)}
                     disabled={currentPage === 1}
-                    style={{ margin: '0 5px', padding: '5px 10px', cursor: 'pointer' }}
+                    style={{ backgroundColor: '#EBE6E7',borderRadius: '5px',  margin: '0 5px',border: 'none', padding: '5px 10px', cursor: 'pointer' }}
                 >
                     Previous
                 </button>
@@ -92,9 +94,9 @@ const ExerciseCard = () => {
                             padding: '5px 10px',
                             cursor: 'pointer',
                             fontWeight: currentPage === number ? 'bold' : 'normal',
-                            backgroundColor: currentPage === number ? '#007bff' : '#fff',
+                            backgroundColor: currentPage === number ? '#EBE6E7' : '#fff',
                             color: currentPage === number ? '#fff' : '#000',
-                            border: '1px solid #007bff',
+                            border: 'none',
                             borderRadius: '5px',
                         }}
                     >
@@ -104,19 +106,20 @@ const ExerciseCard = () => {
                 <button
                     onClick={() => paginate(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    style={{ margin: '0 5px', padding: '5px 10px', cursor: 'pointer' }}
+                    style={{ backgroundColor: '#EBE6E7',borderRadius: '5px',  border: 'none', margin: '0 5px', padding: '5px 10px', cursor: 'pointer' }}
                 >
                     Next
                 </button>
                 <button
                     onClick={() => paginate(totalPages)}
                     disabled={currentPage === totalPages}
-                    style={{ margin: '0 5px', padding: '5px 10px', cursor: 'pointer' }}
+                    style={{ backgroundColor: '#EBE6E7',borderRadius: '5px',  border: 'none', margin: '0 5px', padding: '5px 10px', cursor: 'pointer' }}
                 >
                     Last
                 </button>
             </div>
-        </div>
+        </Stack>
+        </Box>
     );
 };
 

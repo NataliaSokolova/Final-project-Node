@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect } from 'react'; 
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from '../Navbar';
+import Footer from '../Footer';
 import Home from '../../pages/Home';
 import FavoriteExercises from '../../pages/FavoriteExercises'
 import ExerciseCard from '../../pages/ExerciseCard';
@@ -50,7 +51,10 @@ const App = () => {
                 path="/favorite" 
                 element={isLoggedIn ? <FavoriteExercises /> : <Navigate to="/login-register" />} 
             />
+            
         </Routes>
+
+        <Footer />
     </BrowserRouter>
     );
 }
