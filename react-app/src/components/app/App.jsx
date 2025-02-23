@@ -10,18 +10,15 @@ import useLoggedInStatus from './app.hooks'
 import LoginRegister from '../login/LoginRegister';
 import Register from '../login/Register';
 import Login from '../login/Login';
+import MyActivities from '../../pages/MyActivities';
+import ActivityCard from '../../pages/ActivityCard';
 
 const App = () => {
     const { isLoggedIn, checkLoggedIn } = useLoggedInStatus(); 
-
-    
  
     // useEffect(() => {
     //     checkLoggedIn();
     // }, [checkLoggedIn]);
-
- 
-
 
     return (
  
@@ -36,8 +33,6 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/login-register" element={<LoginRegister />} />
 
-        
-
             {/* Protected routes (only accessible if logged in) */}
             <Route 
                 path="/" 
@@ -50,6 +45,10 @@ const App = () => {
             <Route 
                 path="/favorite" 
                 element={isLoggedIn ? <FavoriteExercises /> : <Navigate to="/login-register" />} 
+            />
+            <Route 
+                path="/activities" 
+                element={isLoggedIn ? <ActivityCard /> : <Navigate to="/login-register" />} 
             />
             
         </Routes>

@@ -1,4 +1,4 @@
-import Exercise from "../models/Exercise.js";
+import Activity from "../models/Activity.js";
 import FavExercise from "../models/FavExercise.js";
 import { getStatusCode, StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
@@ -10,7 +10,6 @@ import mongoose from "mongoose";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 
 
 const getAllExs = async (req, res) => {
@@ -97,61 +96,109 @@ const deleteFavorites = async (req, res) => {
     .json({ message: "Exercise removed from favorites.", updatedExercises });
 };
 
-// const createExs = async (req, res) => {
-//   req.body.createdByuser = req.user.userId;
+// crud for activities
 
-//   const favexs = await Exercise.create(req.body);
+const getAllActivities = async (req, res) => {
+  try {
+    if (!req.user || !req.user.userId) {
+      return res.status(401).json({ error: "Unauthorized. Please log in." });
+    }
 
-//   res
-//     .status(StatusCodes.CREATED)
-//     .json({ message: "Exercise added to favorites.", exercise: favexs });
-// };
+    const filter = { createdByuser: req.user.userId };
+    const activities = await Activity.find(filter)
+
+    res.status(201).json({ success: true, data: activities });
+  } catch (error) {
+    console.error("Error creating activity:", error);
+    res.status(500).json({ error: "Server error. Could not create activity." });
+  }
+};
+
+const createActivity = async (req, res) => {
+  try {
+    const { name, duration, activity } = req.body;
+   
+    if (!req.user || !req.user.userId) {
+      return res.status(401).json({ error: "Unauthorized. Please log in." });
+    }
+
+    const newActivity = await Activity.create({
+      name,
+      duration,
+      activity,
+      createdByuser: req.user.userId,
+    });
+
+    res.status(201).json({ success: true, data: newActivity });
+  } catch (error) {
+    console.error("Error creating activity:", error);
+    res.status(500).json({ error: "Server error. Could not create activity." });
+  }
+};
+
+const updateActivity = async (req, res) => {
+  try {
+    const { id } = req.params; 
+    const { name, duration, activity } = req.body;
+
+    if (!req.user || !req.user.userId) {
+      return res.status(401).json({ error: "Unauthorized. Please log in." });
+    }
+    const activityFound = await Activity.findById(id);
+    if (!activityFound) {
+      return res.status(404).json({ error: "Activity not found." });
+    }
+    // Check if the authenticated user is the creator of the activity
+    if (activityFound.createdByuser.toString() !== req.user.userId) {
+      return res.status(403).json({ error: "You are not authorized to update this activity." });
+    }
+    const updatedActivity = await Activity.findByIdAndUpdate(
+      id,
+      { name, duration, activity },
+      { new: true, runValidators: true } 
+    );
+ 
+    res.status(200).json({ success: true, data: updatedActivity });
+  } catch (error) {
+    console.error("Error updating activity:", error);
+    res.status(500).json({ error: "Server error. Could not update activity." });
+  }
+};
 
 
-// const getAllExs = async (req, res) => {
-//   const url = "https://exercisedb.p.rapidapi.com/exercises?limit=10&offset=0";
-//   const options = {
-//     method: "GET",
-//     headers: {
-//       "x-rapidapi-key": process.env.RAPIDAPI_KEY,
-//       "x-rapidapi-host": "exercisedb.p.rapidapi.com",
-//     },
-//   };
+const deleteActivity = async (req, res) => {
+  try {
+    const { id } = req.params; 
+    if (!req.user || !req.user.userId) {
+      return res.status(401).json({ error: "Unauthorized. Please log in." });
+    }
+    const activity = await Activity.findById(id);
+    if (!activity) {
+      return res.status(404).json({ error: "Activity not found." });
+    }
 
-//   const response = await fetch(url, options);
-//   if (!response.ok)
-//     return res
-//       .status(response.status)
-//       .json({ error: `Failed to fetch exercises: ${response.statusText}` });
-
-//   const result = await response.json();
-//   res.status(StatusCodes.OK).json({ exs: result });
-// };
-
-// const deleteExs = async (req, res) => {
-//   const {
-//     user: { userId },
-//     params: { exsID },
-//   } = req;
+    if (activity.createdByuser.toString() !== req.user.userId) {
+      return res.status(403).json({ error: "You are not authorized to delete this activity." });
+    }
+    await Activity.findByIdAndDelete(id);
+    res.status(200).json({ success: true, data: {} });
+  } catch (error) {
+    console.error("Error deleting activity:", error);
+    res.status(500).json({ error: "Server error. Could not delete activity." });
+  }
+};
 
 
 
-//   const deleteExrs = await Exercise.findOneAndDelete({ exsID, userId });
 
-//   if (!deleteExrs) {
-//     return res
-//       .status(StatusCodes.NOT_FOUND)
-//       .json({ message: "Exercise not found" });
-//   }
-
-//   res
-//     .status(StatusCodes.OK)
-//     .json({ message: "Exercise successfully removed from favorites." });
-// };
 
 export {
   getAllExs,
   addToFavorites,
   getAllFavorites,
   deleteFavorites,
+  createActivity,
+  updateActivity,
+  deleteActivity,
+  getAllActivities,
 };

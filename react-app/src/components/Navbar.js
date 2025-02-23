@@ -9,7 +9,7 @@ function Navbar() {
             <Link to="/" className={styles.navLink}>Home</Link>
             <Link to="/exercises" className={styles.navLink}>Exercises</Link>
             <Link to="/favorite" className={styles.navLink}>Favorite exercises</Link>
-           
+            <Link to="/activities" className={styles.navLink}>My Activities</Link>
         </nav>
     );
 }

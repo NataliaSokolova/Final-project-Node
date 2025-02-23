@@ -16,12 +16,12 @@ const useExercises = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Ошибка при загрузке упражнений");
+        throw new Error(" Error while loading");
       }
       const data = await response.json();
       setExercises(data.exs);
     } catch (error) {
-      console.log("Ошибка при загрузке упражнений:", error);
+      console.log("Error while loading:", error);
     }
   };
 
@@ -37,13 +37,13 @@ const useExercises = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Ошибка при загрузке избранных упражнений");
+        throw new Error("Error while loading");
       }
       const data = await response.json();
       setFavoriteExercises(data.favExs);
 
     } catch (error) {
-      console.log("Ошибка при загрузке избранных упражнений:", error);
+      console.log("Error while loading:", error);
     }
   };
 
@@ -61,7 +61,7 @@ const useExercises = () => {
       console.log(response);
 
       if (!response.ok) {
-        throw new Error("Ошибка при загрузке избранных упражнений");
+        throw new Error("Error while loading");
       }
 
       setFavoriteExercises((prev) => [...prev, exerciseId]);
@@ -69,7 +69,7 @@ const useExercises = () => {
       const data = await response.json();
       console.log("addToFav", data);
     } catch (error) {
-      console.log("Ошибка при загрузке избранных упражнений:", error);
+      console.log("Error while loading:", error);
     }
   };
  
@@ -87,7 +87,7 @@ const useExercises = () => {
       console.log(response);
 
       if (!response.ok) {
-        throw new Error("Ошибка при удалении из избранных упражнений");
+        throw new Error("Error while deleting");
       }
 
       setFavoriteExercises((prev) => prev.filter((id) => id !== exerciseId));
@@ -96,9 +96,6 @@ const useExercises = () => {
     }
   };
 
-
-
-  // Добавляем поле `isFavorite` для упражнений, которые есть в избранном
   const exercises = useMemo(() => {
     return allExercises.map((exercise) => {
       return {

@@ -7,7 +7,6 @@ const FavExsSchema = new mongoose.Schema(
       default: [],
     },
 
-
     createdByuser: {
       type: mongoose.Types.ObjectId,
       ref: "User",
