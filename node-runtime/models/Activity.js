@@ -13,13 +13,12 @@ const Activity = new mongoose.Schema(
       type: String,
       required: [true, "Please provide the activity duration"],
       maxlength: 50,
-      // enum: ["30 minutes", "1 hour", "1,5 hour", "2 hours", "2,5 hours"], 
-      // default: "30 minutes", 
+
     },
 
     activity: {
       type: String,
-      // enum: ["Walking", "Running", "Cycling", "Dance", "Swimming", "Football", "Yoga", "Boxing"],
+      maxlength: 50,
     
     },
 

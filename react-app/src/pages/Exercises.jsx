@@ -84,8 +84,6 @@ const useExercises = () => {
         },
         body: JSON.stringify({ exerciseId }),
       });
-      console.log(response);
-
       if (!response.ok) {
         throw new Error("Error while deleting");
       }

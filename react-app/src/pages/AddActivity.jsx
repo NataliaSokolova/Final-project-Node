@@ -1,7 +1,8 @@
 import React from "react";
 import CreateActivityForm from "../components/app/Activityhook";
+import { Link } from "react-router-dom";
 
-const MyActivities = () => {
+const AddActivities = () => {
   const {
     fetchAllActivities,
     allActivities,
@@ -71,8 +72,32 @@ const MyActivities = () => {
           Submit
         </button>
       </form>
+      
+
+
+      <Link
+        to="/activity-card"
+        style={{
+          marginTop: "30px",
+          marginBottom: "10px",
+          marginLeft: "10px",
+          backgroundColor: "#7BC6FF",
+          color: "white",
+          width: "60px",
+          height: "30px",
+          borderRadius: "20%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          textDecoration: "none",
+          fontSize: "16px",
+        }}
+      >
+        Back
+      </Link>
+
     </div>
   );
 };
 
-export default MyActivities;
+export default AddActivities;

@@ -90,7 +90,6 @@ const deleteFavorites = async (req, res) => {
   if (!updatedExercises) {
     throw new NotFoundError("No exercises found or updated");
   }
-
   res
     .status(StatusCodes.OK)
     .json({ message: "Exercise removed from favorites.", updatedExercises });
@@ -165,26 +164,24 @@ const updateActivity = async (req, res) => {
   }
 };
 
-
 const deleteActivity = async (req, res) => {
   try {
-    const { id } = req.params; 
-    if (!req.user || !req.user.userId) {
-      return res.status(401).json({ error: "Unauthorized. Please log in." });
+    const { id } = req.params;
+
+    // Validate if ID is provided and is a valid ObjectId
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Invalid or missing Activity ID" });
     }
-    const activity = await Activity.findById(id);
+
+    const activity = await Activity.findByIdAndDelete(id);
     if (!activity) {
       return res.status(404).json({ error: "Activity not found." });
     }
 
-    if (activity.createdByuser.toString() !== req.user.userId) {
-      return res.status(403).json({ error: "You are not authorized to delete this activity." });
-    }
-    await Activity.findByIdAndDelete(id);
-    res.status(200).json({ success: true, data: {} });
+    res.json({ message: "Activity deleted successfully" });
   } catch (error) {
     console.error("Error deleting activity:", error);
-    res.status(500).json({ error: "Server error. Could not delete activity." });
+    res.status(500).json({ error: "Server error" });
   }
 };
 

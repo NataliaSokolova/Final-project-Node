@@ -10,8 +10,9 @@ import useLoggedInStatus from './app.hooks'
 import LoginRegister from '../login/LoginRegister';
 import Register from '../login/Register';
 import Login from '../login/Login';
-import MyActivities from '../../pages/MyActivities';
 import ActivityCard from '../../pages/ActivityCard';
+import AddActivity from '../../pages/AddActivity'
+
 
 const App = () => {
     const { isLoggedIn, checkLoggedIn } = useLoggedInStatus(); 
@@ -32,6 +33,11 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login-register" element={<LoginRegister />} />
+            <Route path="/activity" element={<AddActivity />} /> 
+            <Route path="/activity-card" element={<ActivityCard />} /> 
+
+
+
 
             {/* Protected routes (only accessible if logged in) */}
             <Route 
