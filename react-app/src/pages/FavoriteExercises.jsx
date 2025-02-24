@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import useExercises from './Exercises';
 
+import { Button, Stack, Typography , Box} from '@mui/material';
+
 const FavoriteExercises = () => {
   const { exercises, fetchAllExercises , favoriteExercises, fetchFavoriteExercises} = useExercises();
 
@@ -15,9 +17,10 @@ const FavoriteExercises = () => {
   const favorite =  exercises.filter((exercise) => exercise.isFavorite);
   console.log(favoriteExercises);
   return (
-    <div>
-      <h2>Favorite Exercises</h2>
-      <ul style={{ listStyleType: 'none', padding: 0 }}>
+    <Box id="exercises" sx={{ mt: { lg: '10px' } }}>
+    <Stack direction="row" sx={{ gap: { lg: '10px', xs: '50px' } }} flexWrap="wrap" justifyContent="center">
+        <h2 style={{ textAlign: 'center' }}>Favorite Exercises</h2>
+        <ul style={{ listStyleType: 'none', padding: 0 }}>
         {favoriteExercises.length === 0 ? (
           <p>No favorite exercises found.</p>
         ) : (
@@ -34,7 +37,8 @@ const FavoriteExercises = () => {
           ))
         )}
       </ul>
-    </div>
+      </Stack>
+      </Box>
   );
 };
 

@@ -7,7 +7,7 @@ const useExercises = () => {
   const fetchAllExercises = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("/api/v1/exercise", {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/exercise`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -28,7 +28,7 @@ const useExercises = () => {
   const fetchFavoriteExercises = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("/api/v1/exercise/all", {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/exercise/all`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -50,7 +50,7 @@ const useExercises = () => {
   const addToFav = async(exerciseId) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("/api/v1/exercise", {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/exercise`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +76,7 @@ const useExercises = () => {
   const removeFromFav = async (exerciseId) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("/api/v1/exercise", {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/exercise`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

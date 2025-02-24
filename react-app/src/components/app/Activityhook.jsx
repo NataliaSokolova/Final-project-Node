@@ -12,7 +12,7 @@ const CreateActivityForm = () => {
   const fetchAllActivities = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("/api/v1/exercise/activity", {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/exercise/activity`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -33,7 +33,7 @@ const CreateActivityForm = () => {
   const createActivity = async () => {
     try {
         const token = localStorage.getItem("token");
-        const response = await fetch("/api/v1/exercise/activity", {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/exercise/activity`, {
             method: "POST",
             headers: {
             "Content-Type": "application/json",
@@ -62,7 +62,7 @@ const CreateActivityForm = () => {
         return;
       }
       const token = localStorage.getItem("token");
-        if (!name || !duration || !activity) {
+        if ( !duration || !activity) {
         console.error("All fields must be filled before updating activity");
         setMessage("Please fill all fields before updating.");
      
@@ -73,7 +73,7 @@ const CreateActivityForm = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ name, duration, activity })
+            body: JSON.stringify({  duration, activity })
         });
 
         if (!response.ok) {
@@ -111,25 +111,6 @@ const CreateActivityForm = () => {
 };
 
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     const activityData = {
-//       name,
-//       duration,
-//       activities,
-//     };
-
-//     try {
-//       const createdActivity = await createActivity(activityData);
-//       console.log("Activity created:", createdActivity);
-//       setName("");
-//       setDuration("");
-//       setActivities("");
-//     } catch (error) {
-//       console.error("Failed to create activity:", error);
-//     }
-//   };
 
 
     return {

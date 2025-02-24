@@ -12,7 +12,6 @@ const ExerciseCard = () => {
         fetchFavoriteExercises();
     }, []);
 
-    // fetchAllExercises, fetchFavoriteExercises
 
     // Calculate the exercises to display for the current page
     const indexOfLastExercise = currentPage * exercisesPerPage;
@@ -39,8 +38,8 @@ const ExerciseCard = () => {
     }
 
     return (
-        <Box id="exercises" sx={{ mt: { lg: '109px' } }} mt="50px" p="20px">
-        <Stack direction="row" sx={{ gap: { lg: '107px', xs: '50px' } }} flexWrap="wrap" justifyContent="center">
+        <Box id="exercises" sx={{ mt: { lg: '10px' } }}>
+        <Stack direction="row" sx={{ gap: { lg: '10px', xs: '50px' } }} flexWrap="wrap" justifyContent="center">
             <h2 style={{ textAlign: 'center' }}>Exercises</h2>
             <ul style={{ listStyleType: 'none', padding: 0 }}>
                 {currentExercises.map((exercise) => (
