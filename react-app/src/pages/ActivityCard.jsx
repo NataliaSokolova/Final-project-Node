@@ -36,7 +36,7 @@ export default function ActivityCard() {
 
   useEffect(() => {
     fetchAllActivities();
-  }, []);
+  }, [allActivities]);
 
   const handleOpen = (id, activity) => {
     setOpenActivityId(id);
@@ -49,9 +49,14 @@ export default function ActivityCard() {
     setOpenActivityId(null);
   };
 
-  const handleEditSubmit = (id) => {
-    editActivity(id, { name, duration, activity });
-    handleClose();
+  const handleEditSubmit = async (id) => {
+    try {
+      await editActivity(id, { name, duration, activity });
+      alert("Activity updated successfully!");
+      handleClose(); // Close the modal
+    } catch (error) {
+      console.error("Failed to update activity:", error);
+    }
   };
 
   return (
@@ -62,8 +67,8 @@ export default function ActivityCard() {
             <TableCell>Activity Name</TableCell>
             <TableCell align="right">Duration</TableCell>
             <TableCell align="right">Type</TableCell>
-            <TableCell align="right">Edit</TableCell>
-            <TableCell align="right">Del</TableCell>
+            <TableCell align="right"></TableCell>
+            <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -122,7 +127,7 @@ export default function ActivityCard() {
                         <label>Activity:</label>
                         <select
                           value={activity}
-                          onChange={(e) => setActivity(e.target.value)}
+                          onChange={(e) => { setActivity(e.target.value); console.log("Selected Activity: ", e.target.value);}}
                         >
                           <option value="">Select an activity</option>
                           <option value="Walking">Walking</option>
@@ -136,19 +141,7 @@ export default function ActivityCard() {
                         </select>
                       </div>
 
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          editActivity(activity._id, {
-                            name,
-                            duration,
-                            activity,
-                          });
-                        }}
-                      >
+                      <Button type="submit" variant="contained" color="primary">
                         Save
                       </Button>
                     </form>

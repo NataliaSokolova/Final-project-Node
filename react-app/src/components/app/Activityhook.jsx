@@ -79,13 +79,6 @@ const CreateActivityForm = () => {
         if (!response.ok) {
             throw new Error("Error while posting activity update to backend");
         }
-
-        setName("");
-        setDuration("");
-        setActivity("");
-        setMessage("Activity updated successfully!");
-        setTimeout(() => setMessage(""), 3000);
-  
     } catch (error) {
       console.log("Error while loading:", error);
     }
