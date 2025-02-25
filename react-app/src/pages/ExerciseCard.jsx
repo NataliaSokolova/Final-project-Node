@@ -45,6 +45,7 @@ const ExerciseCard = () => {
                 {currentExercises.map((exercise) => (
                     <li key={exercise.id} style={{ marginBottom: '20px', borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
                         <h2 style={{ margin: '0 0 10px 0' }}>{exercise.name}</h2>
+                        <img src={exercise.gifUrl} alt={exercise.name} loading="lazy" />
                         <p><strong>Body Part:</strong> {exercise.bodyPart}</p>
                         <p><strong>Equipment:</strong> {exercise.equipment}</p>
                         <p><strong>Target:</strong> {exercise.target}</p>
