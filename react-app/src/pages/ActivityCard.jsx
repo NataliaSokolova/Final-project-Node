@@ -79,25 +79,25 @@ export default function ActivityCard() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {allActivities.map((activity) => (
+            {allActivities.map((activityRow) => (
               <TableRow
-                key={activity._id}
+                key={activityRow._id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {activity.name}
+                  {activityRow.name}
                 </TableCell>
-                <TableCell align="right">{activity.duration}</TableCell>
-                <TableCell align="right">{activity.activity}</TableCell>
+                <TableCell align="right">{activityRow.duration}</TableCell>
+                <TableCell align="right">{activityRow.activity}</TableCell>
 
                 <TableCell align="right">
-                  <Button onClick={() => handleOpen(activity._id, activity)}>
-                    <Button onClick={() => handleOpen(activity._id, activity)}>
+                  <Button onClick={() => handleOpen(activityRow._id, activityRow)}>
+                    <Button onClick={() => handleOpen(activityRow._id, activityRow)}>
                       <EditIcon />
                     </Button>
                   </Button>
                   <Modal
-                    open={openActivityId === activity._id}
+                    open={openActivityId === activityRow._id}
                     onClose={handleClose}
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
@@ -109,7 +109,7 @@ export default function ActivityCard() {
                       <form
                         onSubmit={(e) => {
                           e.preventDefault();
-                          handleEditSubmit(activity._id);
+                          handleEditSubmit(activityRow._id);
                         }}
                       >
                         <Typography variant="h6" gutterBottom>
@@ -178,7 +178,7 @@ export default function ActivityCard() {
                           "Are you sure you want to remove this activity from favorites?"
                         )
                       ) {
-                        deleteActivity(activity._id);
+                        deleteActivity(activityRow._id);
                       }
                     }}
                   >
