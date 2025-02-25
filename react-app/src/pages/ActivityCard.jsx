@@ -195,7 +195,7 @@ export default function ActivityCard() {
   style={{
     marginTop: "30px",
     marginLeft: "10px",
-    backgroundColor: "#FF5733",
+    backgroundColor: "#7BC6FF",
     color: "white",
     width: "150px",
     height: "35px",
@@ -204,7 +204,8 @@ export default function ActivityCard() {
     alignItems: "center",
     justifyContent: "center",
     textDecoration: "none",
-    fontSize: "14px",
+    fontWeight: '600',
+    fontSize: "16px",
 
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
     transition: "background-color 0.3s ease-in-out",

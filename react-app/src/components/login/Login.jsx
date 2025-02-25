@@ -83,7 +83,7 @@ const Login = ({ switchToRegister }) => {
                 cursor: 'pointer',
               }}
             >
-              {showPassword ? '🙈' : '👁️'}
+              {showPassword ? '🙈' : '👀'}
             </button>
           </div>
         </label>
@@ -94,7 +94,7 @@ const Login = ({ switchToRegister }) => {
           <button
             type="button"
             onClick={switchToRegister}
-            style={{ padding: '10px 20px', background: '#6c757d', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+            style={{ padding: '10px 20px', background: '#B3B3B3', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
           >
             Register
           </button>

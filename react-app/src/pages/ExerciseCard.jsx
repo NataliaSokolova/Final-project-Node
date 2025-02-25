@@ -132,7 +132,7 @@ const ExerciseCard = () => {
                             cursor: 'pointer',
                             fontWeight: currentPage === number ? 'bold' : 'normal',
                             backgroundColor: currentPage === number ? '#EBE6E7' : '#fff',
-                            color: currentPage === number ? '#fff' : '#000',
+                            color: '#000',
                             border: 'none',
                             borderRadius: '5px',
                         }}
