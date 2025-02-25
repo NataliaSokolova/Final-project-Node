@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useExercises from './Exercises';
-import {  Button, Stack, Typography, Box, Select, MenuItem } from '@mui/material';
+import { Stack, Box, Select, MenuItem } from '@mui/material';
 
 const ExerciseCard = () => {
     const { exercises, fetchAllExercises, fetchFavoriteExercises, addToFav, removeFromFav} = useExercises();
@@ -14,27 +14,31 @@ const ExerciseCard = () => {
     }, []);
 
 
-    // for filtering
+    const filterExercises = () => {
+        console.log("filterExercises", exercises.length);
+        if (!exercises || exercises.length === 0) return [];
+        console.log("filter criteria", filterCriteria);
+        if (filterCriteria === 'all') {console.log("returning exercises"); return exercises;}
+        return exercises.filter((exercise) => 
+            exercise.bodyPart.toLowerCase() === filterCriteria.toLowerCase()
+        );
+    };
 
-    // const filterExercises = () => {
-    //     if (filterCriteria === 'all') return exercises;
-    //     return exercises.filter((exercise) => exercise.bodyPart.toLowerCase() === filterCriteria.toLowerCase());
-    // };
-
-    // // Get filtered exercises
-    // const filteredExercises = filterExercises();
+    console.log("before exercises lenght", exercises.length);
+    const filteredExercises = filterExercises();
+    console.log("filtered exercises lenght", filteredExercises.length)
 
     // Calculate the exercises to display for the current page
     const indexOfLastExercise = currentPage * exercisesPerPage;
     const indexOfFirstExercise = indexOfLastExercise - exercisesPerPage;
-    const currentExercises = exercises.slice(indexOfFirstExercise, indexOfLastExercise);
+    const currentExercises = filteredExercises.slice(indexOfFirstExercise, indexOfLastExercise);
 
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     // Generate page numbers to display
     const pageNumbers = [];
-    const totalPages = Math.ceil(exercises.length / exercisesPerPage);
+    const totalPages = Math.ceil(filteredExercises.length / exercisesPerPage);
     const maxPageButtons = 5; // Maximum number of page buttons to display
 
     let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
@@ -58,9 +62,16 @@ const ExerciseCard = () => {
                     sx={{ width: 200 }}
                 >
                     <MenuItem value="all">All</MenuItem>
+                    <MenuItem value="back">Back</MenuItem>
+                    <MenuItem value="cardio">Cardio</MenuItem>
+                    <MenuItem value="chest">Chest</MenuItem>
+                    <MenuItem value="lower arms">Lower Arm</MenuItem>
+                    <MenuItem value="lower legs">Lower Legs</MenuItem>
+                    <MenuItem value="neck">Neck</MenuItem>
+                    <MenuItem value="shoulders">Shoulders</MenuItem>
+                    <MenuItem value="upper arms">Upper Arms</MenuItem>
+                    <MenuItem value="upper legs">Upper Legs</MenuItem>
                     <MenuItem value="waist">Waist</MenuItem>
-                    <MenuItem value="legs">Legs</MenuItem>
-                    <MenuItem value="arms">Arms</MenuItem>
                 </Select>
             </Box> 
 
