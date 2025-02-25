@@ -1,11 +1,10 @@
 import React from "react";
 import CreateActivityForm from "../components/app/Activityhook";
 import { Link } from "react-router-dom";
+import { Container, TextField, MenuItem, Button, Typography, Select, FormControl, InputLabel } from "@mui/material";
 
 const AddActivities = () => {
   const {
-    fetchAllActivities,
-    allActivities,
     name,
     setName,
     duration,
@@ -23,80 +22,78 @@ const AddActivities = () => {
   };
 
   return (
-    <div>
+    <Container maxWidth="sm" sx={{ mt: 4, p: 3, boxShadow: 3, borderRadius: 2, bgcolor: "white" }}>
       {message && (
-        <div style={{ color: "green", marginBottom: "10px" }}>{message}</div>
+        <Typography color="success.main" sx={{ mb: 2 }}>
+          {message}
+        </Typography>
       )}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
-          <input
-            type="text"
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <TextField
+            label="Name"
+            variant="outlined"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
-        </div>
+        </FormControl>
 
-        <div>
-          <label>Duration:</label>
-          <select
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <InputLabel>Duration</InputLabel>
+          <Select
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
+            label="Duration"
           >
-            <option value="30 minutes">30 minutes</option>
-            <option value="1 hour">1 hour</option>
-            <option value="2 hours">2 hours</option>
-          </select>
-        </div>
+            <MenuItem value="30 minutes">30 minutes</MenuItem>
+            <MenuItem value="1 hour">1 hour</MenuItem>
+            <MenuItem value="2 hours">2 hours</MenuItem>
+          </Select>
+        </FormControl>
 
-        <div>
-          <label>Activity:</label>
-          <select
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <InputLabel>Activity</InputLabel>
+          <Select
             value={activity}
             onChange={(e) => setActivity(e.target.value)}
+            label="Activity"
           >
-            <option value="">Select an activity</option>
-            <option value="Walking">Walking</option>
-            <option value="Running">Running</option>
-            <option value="Cycling">Cycling</option>
-            <option value="Dance">Dance</option>
-            <option value="Swimming">Swimming</option>
-            <option value="Football">Football</option>
-            <option value="Yoga">Yoga</option>
-            <option value="Boxing">Boxing</option>
-          </select>
-        </div>
+            <MenuItem value="">Select an activity</MenuItem>
+            <MenuItem value="Walking">Walking</MenuItem>
+            <MenuItem value="Running">Running</MenuItem>
+            <MenuItem value="Cycling">Cycling</MenuItem>
+            <MenuItem value="Dance">Dance</MenuItem>
+            <MenuItem value="Swimming">Swimming</MenuItem>
+            <MenuItem value="Football">Football</MenuItem>
+            <MenuItem value="Yoga">Yoga</MenuItem>
+            <MenuItem value="Boxing">Boxing</MenuItem>
+          </Select>
+        </FormControl>
 
-        <button type="submit" onClick={() => createActivity()}>
+        <Button 
+          type="submit" 
+          variant="contained" 
+          color="primary" 
+          fullWidth 
+          sx={{ mt: 2 }}
+          style={{ backgroundColor: "#FF5733" }}
+          onClick={() => createActivity()}
+        >
           Submit
-        </button>
+        </Button>
       </form>
-      
 
-
-      <Link
+      <Button
+        component={Link}
         to="/activity-card"
-        style={{
-          marginTop: "30px",
-          marginBottom: "10px",
-          marginLeft: "10px",
-          backgroundColor: "#7BC6FF",
-          color: "white",
-          width: "60px",
-          height: "30px",
-          borderRadius: "20%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          textDecoration: "none",
-          fontSize: "16px",
-        }}
+        variant="outlined"
+        color="secondary"
+        sx={{ mt: 3, width: "100%" }}
       >
         Back
-      </Link>
-
-    </div>
+      </Button>
+    </Container>
   );
 };
 

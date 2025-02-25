@@ -18,7 +18,7 @@ function Navbar() {
             <Link to="/favorite" className={styles.navLink}>Favorite exercises</Link>
             <Link to="/activities" className={styles.navLink}>My Activities</Link>
             <button onClick={handleLogout} className={styles.logoutButton}>
-                Logout
+                Log Out
             </button>
         </nav>
     );

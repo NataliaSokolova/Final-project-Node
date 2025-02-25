@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import useExercises from './Exercises';
-import { Button, Stack, Typography , Box} from '@mui/material';
+import {  Button, Stack, Typography, Box, Select, MenuItem } from '@mui/material';
 
 const ExerciseCard = () => {
     const { exercises, fetchAllExercises, fetchFavoriteExercises, addToFav, removeFromFav} = useExercises();
     const [currentPage, setCurrentPage] = useState(1); 
+    const [filterCriteria, setFilterCriteria] = useState('all'); 
     const exercisesPerPage = 5; 
 
     useEffect(() => {
@@ -12,6 +13,16 @@ const ExerciseCard = () => {
         fetchFavoriteExercises();
     }, []);
 
+
+    // for filtering
+
+    // const filterExercises = () => {
+    //     if (filterCriteria === 'all') return exercises;
+    //     return exercises.filter((exercise) => exercise.bodyPart.toLowerCase() === filterCriteria.toLowerCase());
+    // };
+
+    // // Get filtered exercises
+    // const filteredExercises = filterExercises();
 
     // Calculate the exercises to display for the current page
     const indexOfLastExercise = currentPage * exercisesPerPage;
@@ -36,9 +47,24 @@ const ExerciseCard = () => {
     for (let i = startPage; i <= endPage; i++) {
         pageNumbers.push(i);
     }
-
     return (
         <Box id="exercises" sx={{ mt: { lg: '10px' } }}>
+
+            <Box sx={{ textAlign: 'center', mb: 2 }}>
+                <Select
+                    value={filterCriteria}
+                    onChange={(e) => { setFilterCriteria(e.target.value); setCurrentPage(1); }} // Reset page on filter change
+                    displayEmpty
+                    sx={{ width: 200 }}
+                >
+                    <MenuItem value="all">All</MenuItem>
+                    <MenuItem value="waist">Waist</MenuItem>
+                    <MenuItem value="legs">Legs</MenuItem>
+                    <MenuItem value="arms">Arms</MenuItem>
+                </Select>
+            </Box> 
+
+
         <Stack direction="row" sx={{ gap: { lg: '10px', xs: '50px' } }} flexWrap="wrap" justifyContent="center">
             <h2 style={{ textAlign: 'center' }}>Exercises</h2>
             <ul style={{ listStyleType: 'none', padding: 0 }}>

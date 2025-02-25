@@ -190,9 +190,32 @@ export default function ActivityCard() {
           </TableBody>
         </Table>
 
-        <Link to="/activity" style={addActivityButtonStyle}>
-          Add Activity
-        </Link>
+        <Link
+  to="/activity"
+  style={{
+    marginTop: "30px",
+    marginLeft: "10px",
+    backgroundColor: "#FF5733",
+    color: "white",
+    width: "150px",
+    height: "35px",
+    borderRadius: "5px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    textDecoration: "none",
+    fontSize: "14px",
+
+    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+    transition: "background-color 0.3s ease-in-out",
+    "&:hover": {
+      backgroundColor: "#E64A2E",
+    },
+  }}
+>
+  ADD ACTIVITY
+</Link>
+
       </TableContainer>
     </Box>
   );

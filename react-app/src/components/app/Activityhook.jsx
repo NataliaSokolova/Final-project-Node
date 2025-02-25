@@ -46,10 +46,10 @@ const CreateActivityForm = () => {
             throw new Error("Error while posting activity to backend");
         }
         setMessage("Activity added successfully!");
-        setName("");
-        setDuration("30 minutes");
-        setActivity("");
-        setTimeout(() => setMessage(""), 3000);
+        // setName("");
+        // setDuration("30 minutes");
+        // setActivity("");
+        // setTimeout(() => setMessage(""), 3000);
     } catch (error) {
       console.log("Error while loading:", error);
     }

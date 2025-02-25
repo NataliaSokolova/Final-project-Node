@@ -1,5 +1,3 @@
-/* Navbar.module.css */
-
 /* Navbar container */
 .navbar {
     background: linear-gradient(90deg, #ff7e5f, #feb47b); /* Vibrant gradient background */
@@ -13,34 +11,26 @@
     z-index: 1000;
 }
 
-/* Logo or brand name 
-.logo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-    */
-
-/* Navigation links */
+/* Navigation container */
 .navLinks {
     display: flex;
     gap: 1.5rem;
+    flex-grow: 1; /* Push the log out button to the right */
 }
 
+/* Individual navigation link */
 .navLink {
     color: white;
     text-decoration: none;
     font-size: 1.2rem;
-    font-weight: 500;
+    font-weight: 400;
     transition: all 0.3s ease;
     position: relative;
 }
 
 /* Hover effect for links */
 .navLink:hover {
-    color: #ffddc1; /* Lighter shade for hover */
+    color: #ffddc1;
 }
 
 /* Underline animation on hover */
@@ -59,6 +49,24 @@
     width: 100%;
 }
 
+/* Logout button */
+.logoutButton {
+    background-color: white;
+    color: #ff7e5f;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.logoutButton:hover {
+    background-color: #ff7e5f;
+    color: white;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .navbar {
@@ -70,5 +78,9 @@
         flex-direction: column;
         gap: 1rem;
         margin-top: 1rem;
+    }
+
+    .logoutButton {
+        margin-top: 10px;
     }
 }
