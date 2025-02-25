@@ -62,23 +62,31 @@ const CreateActivityForm = () => {
         return;
       }
       const token = localStorage.getItem("token");
-        if ( !duration || !activity) {
+        if ( !name || !duration || !activity) {
         console.error("All fields must be filled before updating activity");
         setMessage("Please fill all fields before updating.");
      
       }
-        const response = await fetch(`/api/v1/exercise/activity/${activityId}`, {
-            method: "PATCH",
-            headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({  duration, activity })
-        });
+      const response = await fetch(`/api/v1/exercise/activity/${activityId}`, {
+          method: "PATCH",
+          headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ name, duration, activity })
+      });
 
-        if (!response.ok) {
-            throw new Error("Error while posting activity update to backend");
-        }
+      if (!response.ok) {
+          throw new Error("Error while posting activity update to backend");
+      }
+      const updatedActivity = await response.json();
+      setAllActivities((prevActivities) =>
+        prevActivities.map((act) =>
+          act._id === activityId ? { ...act, ...updatedActivity.data } : act
+        )
+      );
+
+      setMessage("Activity updated successfully!");
     } catch (error) {
       console.log("Error while loading:", error);
     }
