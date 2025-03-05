@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(xss());
 
-app.use(cors());
+// app.use(cors());
 app.use(cors({ origin: 'http://localhost:3000' }));
 
 
